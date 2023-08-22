@@ -1,0 +1,10 @@
+# System files
+.env
+
+# dependencies
+/node_modules
+
+package-lock.json
+
+# Compiled output
+/dist
