@@ -6,8 +6,14 @@ export async function registration(body: IUserModel) {
   return await User.create(body);
 }
 
-export async function getUsers() {
-  const data = await User.find();
+export async function getUsers(query: any, limit: number, sortField: string, sortOrder: number) {
+  const sortOptions: any = {};
+  sortOptions[sortField] = sortOrder;
+
+  const data = await User.find(query)
+    .limit(limit)
+    .sort(sortOptions);
+
   return data;
 }
 
