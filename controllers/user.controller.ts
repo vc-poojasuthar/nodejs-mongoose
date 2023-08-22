@@ -6,7 +6,7 @@ export async function registerUser(req: Request, res: Response) {
     if (!req.body.email) {
       return res.status(400).send('Email is required!');
     }
-    const data = await userService.registration(req.body);    
+    const data = await userService.registration(req.body);
     return res.status(200).send(data);
   }
   catch (err) {
@@ -16,42 +16,12 @@ export async function registerUser(req: Request, res: Response) {
 
 export async function getUsers(req: Request, res: Response) {
   try {
-    const search = req.query.search;
-    // const condition = search ?
-    //     {
-    //          name: search 
-    //         // $or: [
-    //         //     { name: search },
-    //         //     { email: search }
-    //         // ]
-    //     } : null;
-    //       const condition = search ? {
-    //           [Op.or]: [
-    //               {
-    //                   name: { [Op.like]: `%${search}%` }
-    //               },
-    //               {
-    //                   email: { [Op.like]: `%${search}%` }
-    //               }
-    //           ]
-    //       } : null
-
-    //         const query = {};
-    // if (search) {
-    //   query.$text = { $search: search, $language: "en" };
-    // }
-
-
-
-    const condition = null;
-    console.log("condition", condition);
-
-    const users = await userService.getUsers(condition);
-    return res.send({data: users});
+    const users = await userService.getUsers();
+    return res.send({ data: users });
   }
   catch (err) {
-    return res.status(500).send({ 
-      message: 'Something went wrong!' 
+    return res.status(500).send({
+      message: 'Something went wrong!'
     });
   }
 }
@@ -77,7 +47,7 @@ export async function updateUser(req: Request, res: Response): Promise<any> {
       password: req.body.password,
       confirmPassword: req.body.confirmPassword
     };
-    const user = await userService.updateUser(req.params.id, data);  
+    const user = await userService.updateUser(req.params.id, data);
     res.send(JSON.stringify(user));
   }
   catch (err) {

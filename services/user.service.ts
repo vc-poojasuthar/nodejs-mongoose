@@ -6,19 +6,19 @@ export async function registration(body: IUserModel) {
   return await User.create(body);
 }
 
-export function getUsers(condition: any) {
-  const data = User.find({ condition });//.sort({ createdAt: -1 }).limit(10);
+export async function getUsers() {
+  const data = await User.find();
   return data;
 }
 
-export function getUserById(id: string) {
-  return User.findById(id);
+export async function getUserById(id: string) {
+  return await User.findById(id);
 }
 
-export function updateUser(userId: string, body: any) {
-  return User.findByIdAndUpdate({ _id: userId }, body, { new: true, strict: false });
+export async function updateUser(userId: string, body: any) {
+  return await User.findByIdAndUpdate({ _id: userId }, body, { new: true, strict: false });
 }
 
-export function deleteUser(userId: string) {
-  return User.deleteOne({ _id: userId });
+export async function deleteUser(userId: string) {
+  return await User.deleteOne({ _id: userId });
 }
