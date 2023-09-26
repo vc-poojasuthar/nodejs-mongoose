@@ -17,18 +17,22 @@ export async function registerUser(req: Request, res: Response) {
 export async function getUsers(req: Request, res: Response) {
   try {
     const searchTerm = req.query.search as string;
+    const page = req.query.page ? parseInt(req.query.page as string, 10): 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 2;
-    const sortField = req.query.sortBy as string ?? 'email';
-    const sortOrder = req.query.sortOrder? parseInt(req.query.sortOrder as string, 10) : 1; 
+    const sortField = req.query.sortBy as string ?? 'createdAt';
+    const sortOrder = req.query.sortOrder ? parseInt(req.query.sortOrder as string, 10) : -1;
 
-    const query = {
-      $or: [
-        { email: new RegExp(searchTerm, 'i') },
-        { firstName: new RegExp(searchTerm, 'i') },
-        { lastName: new RegExp(searchTerm, 'i') }
-      ]
-    };
-    const users = await userService.getUsers(query, limit, sortField, sortOrder);
+    let query = {};
+    if (searchTerm) {
+      query = {
+        $or: [
+          { email: new RegExp(searchTerm, 'i') },
+          { firstName: new RegExp(searchTerm, 'i') },
+          { lastName: new RegExp(searchTerm, 'i') }
+        ]
+      };
+    }
+    const users = await userService.getUsers(query, page, limit, sortField, sortOrder);
     return res.send({ data: users });
   }
   catch (err) {

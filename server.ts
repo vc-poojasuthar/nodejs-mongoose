@@ -7,6 +7,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+
 mongodb.connect(); 
 
 app.use(express.json());
@@ -16,7 +17,7 @@ app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
     res.json({
-        message: "Hello, this is Node.js app."
+        message: "Hello, Node.js app running."
     })
 })
 
@@ -26,4 +27,4 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
 
-app.use(router());
+app.use("/api/v1",router());

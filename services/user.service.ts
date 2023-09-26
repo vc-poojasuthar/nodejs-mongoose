@@ -6,13 +6,14 @@ export async function registration(body: IUserModel) {
   return await User.create(body);
 }
 
-export async function getUsers(query: any, limit: number, sortField: string, sortOrder: number) {
+export async function getUsers(query: any, page: number, limit: number, sortField: string, sortOrder: number) {
   const sortOptions: any = {};
   sortOptions[sortField] = sortOrder;
 
   const data = await User.find(query)
-    .limit(limit)
-    .sort(sortOptions);
+  .sort(sortOptions)
+  .skip((page - 1) * limit)
+  .limit(limit);
 
   return data;
 }
