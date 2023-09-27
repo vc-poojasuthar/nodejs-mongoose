@@ -58,7 +58,7 @@ export async function getUsers(req: Request, res: Response) {
 }
 
 export async function getUserById(req: Request, res: Response): Promise<any> {
-  try {
+  try {    
     const user = await userService.getUserById(req.params.id);
     res.send(JSON.stringify(user));
   }

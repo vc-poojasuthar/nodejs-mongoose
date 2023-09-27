@@ -5,5 +5,7 @@ export const messages = {
   USER_UPDATE_ERR :"Some error occurred while updating the user.",
   USER_DELETE_ERR :"Some error occurred while deleting the user.",
   EMAIL_REQUIRED: 'Email is required!',
-  PASSWORD_REQUIRED: 'Password is required!'
+  PASSWORD_REQUIRED: 'Password is required!',
+  INVALID_TOKEN: 'Invalid token.',
+  ACCESS_DENIED: 'Access denied. No token provided.'
 }
