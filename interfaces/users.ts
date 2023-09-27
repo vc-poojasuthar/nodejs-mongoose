@@ -4,7 +4,9 @@ export interface IUser {
   lastName: string;
   address: string;
   password: string;
-  type: string;
+  role: string;
   gender: string;
   isActive: boolean;
+  token: string;
+  isDeleted: boolean;
 }

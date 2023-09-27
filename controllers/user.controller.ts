@@ -1,23 +1,40 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/user.service';
+import { messages } from '../_helper/messages';
+
+export async function login(req: Request, res: Response) {
+  try {
+    if (!req.body.email) {
+      return res.status(400).send({ message: messages.EMAIL_REQUIRED });
+    }
+    if (!req.body.password) {
+      return res.status(400).send({ message: messages.PASSWORD_REQUIRED });
+    }
+    const users = await userService.login(req.body);
+    return res.status(200).send({ data: users });
+  }
+  catch (err) {
+    return res.status(500).send({ message: messages.COMMON_ERR });
+  }
+}
 
 export async function registerUser(req: Request, res: Response) {
   try {
     if (!req.body.email) {
-      return res.status(400).send('Email is required!');
+      return res.status(400).send({ message: messages.EMAIL_REQUIRED });
     }
     const data = await userService.registration(req.body);
     return res.status(200).send(data);
   }
   catch (err) {
-    return res.status(500).send(err || 'Something went wrong!');
+    return res.status(500).send({ message: messages.COMMON_ERR });
   }
 }
 
 export async function getUsers(req: Request, res: Response) {
   try {
     const searchTerm = req.query.search as string;
-    const page = req.query.page ? parseInt(req.query.page as string, 10): 1;
+    const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 2;
     const sortField = req.query.sortBy as string ?? 'createdAt';
     const sortOrder = req.query.sortOrder ? parseInt(req.query.sortOrder as string, 10) : -1;
@@ -33,12 +50,10 @@ export async function getUsers(req: Request, res: Response) {
       };
     }
     const users = await userService.getUsers(query, page, limit, sortField, sortOrder);
-    return res.send({ data: users });
+    return res.status(200).send({ data: users });
   }
   catch (err) {
-    return res.status(500).send({
-      message: 'Something went wrong!'
-    });
+    return res.status(500).send({ message: messages.COMMON_ERR });
   }
 }
 
@@ -48,9 +63,7 @@ export async function getUserById(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(500).send({
-      message: "Some error occurred while finding the user."
-    });
+    res.status(500).send({ message: messages.USER_FETCH_ERR });
   }
 }
 export async function updateUser(req: Request, res: Response): Promise<any> {
@@ -67,9 +80,7 @@ export async function updateUser(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(500).send({
-      message: "Some error occurred while updating the user."
-    });
+    res.status(500).send({ message: messages.USER_UPDATE_ERR });
   }
 }
 
@@ -79,8 +90,6 @@ export async function deleteUser(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(500).send({
-      message: "Some error occurred while deleting the user."
-    });
+    res.status(500).send({ message: messages.USER_DELETE_ERR });
   }
 }

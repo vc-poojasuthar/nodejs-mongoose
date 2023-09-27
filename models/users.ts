@@ -31,7 +31,7 @@ export const User = new Schema<IUserModel>({
     required: true,
     trim: true
   },
-  type: {
+  role: {
     type: String,
     required: false,
     enum: ["user", "admin"],
@@ -44,8 +44,11 @@ export const User = new Schema<IUserModel>({
   },
   isActive: {
     type: Boolean,
-    required: false,
     default: true
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true
@@ -63,13 +66,5 @@ User.pre<IUserModel>('save', async function (next: (error?: Error) => void) {
     return next(error as Error);
   }
 });
-
-User.methods.comparePassword = async function (password: string) {
-  try {
-    return await bcrypt.compare(password, this.password);
-  } catch (error) {
-    throw error;
-  }
-};
 
 export default mongoose.model<IUserModel>("User", User);

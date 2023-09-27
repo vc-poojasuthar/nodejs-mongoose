@@ -3,7 +3,7 @@ import { userRouter } from './user';
 
 export default function () {
   const router = Router();
-  router.use('/user', userRouter);
+  router.use('/auth', userRouter);
 
   return router;
 }
