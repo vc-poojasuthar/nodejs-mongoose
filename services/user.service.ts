@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import User, { IUserModel } from '../models/user.model';
 import { messages } from "../config/api.messages";
+import MailService from '../services/mail.service';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
@@ -26,6 +27,11 @@ export async function login(body: { email: string; password: string }) {
     isActive: user.isActive,
     token: token
   }
+  const invitationData = {
+    activationLink: `http://localhost:4200/auth/active-user/${token}`
+  };
+  await MailService.sendActivationEmail(user.email, 'Activate Your Account','invitation-user', invitationData);
+
   return loginUser;
 }
 
