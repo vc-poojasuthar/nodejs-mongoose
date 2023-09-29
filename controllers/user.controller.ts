@@ -1,33 +1,34 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/user.service';
 import { messages } from '../config/api.messages';
+import { HttpStatus } from '../config/status-code';
 
 export async function login(req: Request, res: Response) {
   try {
     if (!req.body.email) {
-      return res.status(400).send({ message: messages.EMAIL_REQUIRED });
+      return res.status(HttpStatus.BAD_REQUEST).send({ message: messages.EMAIL_REQUIRED });
     }
     if (!req.body.password) {
-      return res.status(400).send({ message: messages.PASSWORD_REQUIRED });
+      return res.status(HttpStatus.BAD_REQUEST).send({ message: messages.PASSWORD_REQUIRED });
     }
     const users = await userService.login(req.body);
-    return res.status(200).send({ data: users });
+    return res.status(HttpStatus.SUCCESS).send({ data: users });
   }
-  catch (err) {
-    return res.status(500).send({ message: messages.COMMON_ERR });
+  catch (err: any) {
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: err.message || messages.COMMON_ERR });
   }
 }
 
 export async function registerUser(req: Request, res: Response) {
   try {
     if (!req.body.email) {
-      return res.status(400).send({ message: messages.EMAIL_REQUIRED });
+      return res.status(HttpStatus.BAD_REQUEST).send({ message: messages.EMAIL_REQUIRED });
     }
     const data = await userService.registration(req.body);
-    return res.status(200).send(data);
+    return res.status(HttpStatus.SUCCESS).send(data);
   }
   catch (err) {
-    return res.status(500).send({ message: messages.COMMON_ERR });
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.COMMON_ERR });
   }
 }
 
@@ -50,10 +51,10 @@ export async function getUsers(req: Request, res: Response) {
       };
     }
     const users = await userService.getUsers(query, page, limit, sortField, sortOrder);
-    return res.status(200).send({ data: users });
+    return res.status(HttpStatus.SUCCESS).send({ data: users });
   }
   catch (err) {
-    return res.status(500).send({ message: messages.COMMON_ERR });
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.COMMON_ERR });
   }
 }
 
@@ -63,7 +64,7 @@ export async function getUserById(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(500).send({ message: messages.USER_FETCH_ERR });
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.USER_FETCH_ERR });
   }
 }
 
@@ -81,7 +82,7 @@ export async function updateUser(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(500).send({ message: messages.USER_UPDATE_ERR });
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.USER_UPDATE_ERR });
   }
 }
 
@@ -91,6 +92,6 @@ export async function deleteUser(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(500).send({ message: messages.USER_DELETE_ERR });
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.USER_DELETE_ERR });
   }
 }

@@ -7,7 +7,7 @@ export const messages = {
   EMAIL_REQUIRED: 'Email is required',
   EMAIL_INVALID: 'Email is invalid',
   PASSWORD_REQUIRED: 'Password is required',
-  PASSWORD_LENGTH: 'Password length must be 7 characters long',
+  PASSWORD_LENGTH: 'Password min must be 6 characters long',
   INVALID_TOKEN: 'Invalid token.',
   ACCESS_DENIED: 'Access denied. No token provided.'
 }

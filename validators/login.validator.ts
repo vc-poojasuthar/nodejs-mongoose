@@ -16,7 +16,7 @@ const passwordMessages = {
 
 const schema = Joi.object({
   email: Joi.string().email().required().messages(emailMessages),
-  password: Joi.string().required().length(7).messages(passwordMessages),
+  password: Joi.string().required().min(6).messages(passwordMessages),
 });
 
 function validateLoginUser(req: Request, res: Response, next: NextFunction) {

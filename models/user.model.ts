@@ -14,7 +14,7 @@ export const User = new Schema<IUserModel>({
   },
   firstName: {
     type: String,
-    required: true,
+    required:[true,"First name is required"],
     trim: true
   },
   lastName: {
@@ -44,8 +44,9 @@ export const User = new Schema<IUserModel>({
   },
   isActive: {
     type: Boolean,
-    default: true
+    default: false
   },
+  token: { type: String },
   isDeleted: {
     type: Boolean,
     default: false
