@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import User, { IUserModel } from '../models/users';
+import User, { IUserModel } from '../models/user.model';
+import { messages } from "../config/messages";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
-import { messages } from "../_helper/messages";
 dotenv.config();
-
 
 export async function login(body: { email: string; password: string }) {
   const user = await User.findOne({ email: body.email });

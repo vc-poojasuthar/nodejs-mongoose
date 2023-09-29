@@ -1,6 +1,6 @@
 
 import mongoose, { Document, Schema } from 'mongoose';
-import { IUser } from '../interfaces/users';
+import { IUser } from '../interfaces/user.interface';
 import bcrypt from 'bcrypt';
 
 export interface IUserModel extends IUser, Document { }

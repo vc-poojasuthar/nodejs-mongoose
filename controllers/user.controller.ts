@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/user.service';
-import { messages } from '../_helper/messages';
+import { messages } from '../config/messages';
 
 export async function login(req: Request, res: Response) {
   try {
@@ -35,7 +35,7 @@ export async function getUsers(req: Request, res: Response) {
   try {
     const searchTerm = req.query.search as string;
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
-    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 2;
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 5;
     const sortField = req.query.sortBy as string ?? 'createdAt';
     const sortOrder = req.query.sortOrder ? parseInt(req.query.sortOrder as string, 10) : -1;
 
@@ -58,7 +58,7 @@ export async function getUsers(req: Request, res: Response) {
 }
 
 export async function getUserById(req: Request, res: Response): Promise<any> {
-  try {    
+  try {
     const user = await userService.getUserById(req.params.id);
     res.send(JSON.stringify(user));
   }
@@ -66,6 +66,7 @@ export async function getUserById(req: Request, res: Response): Promise<any> {
     res.status(500).send({ message: messages.USER_FETCH_ERR });
   }
 }
+
 export async function updateUser(req: Request, res: Response): Promise<any> {
   try {
     const data = {
