@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/user.service';
-import { messages } from '../config/messages';
+import { messages } from '../config/api.messages';
 
 export async function login(req: Request, res: Response) {
   try {

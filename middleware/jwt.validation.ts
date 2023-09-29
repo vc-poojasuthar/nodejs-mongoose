@@ -1,7 +1,7 @@
 // auth.middleware.ts
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { messages } from '../config/messages';
+import { messages } from '../config/api.messages';
 import * as dotenv from "dotenv";
 dotenv.config();
 

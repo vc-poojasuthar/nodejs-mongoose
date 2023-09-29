@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import User, { IUserModel } from '../models/user.model';
-import { messages } from "../config/messages";
+import { messages } from "../config/api.messages";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
