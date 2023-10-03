@@ -27,7 +27,7 @@ export class UserNotFoundException extends ApiError {
 
 export class EmailAlreadyExistsException extends ApiError {
   constructor() {    
-    super(messages.EMAIL_ALREADY_EXISTS, HttpStatus.CONFLICT);
+    super(messages.EMAIL_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
     this.name = this.constructor.name;
   }
 }

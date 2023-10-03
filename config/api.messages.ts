@@ -4,7 +4,7 @@ export const messages = {
   USER_NOT_FOUND: 'User not found',
   EMAIL_REQUIRED: 'Email is required',
   EMAIL_INVALID: 'Email is invalid',
-  EMAIL_ALREADY_EXISTS: 'Email id is already registered',
+  EMAIL_ALREADY_EXISTS: 'Email is already registered',
   PASSWORD_REQUIRED: 'Password is required',
   PASSWORD_LENGTH: 'Password min must be 6 characters long',
   FIRST_NAME_REQUIRED: 'First name is required',
