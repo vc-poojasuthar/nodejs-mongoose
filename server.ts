@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from 'cors';
 import router from './routes/index';
-
+import { errorHandler } from "./config/error-handler";
 import * as bodyParser from "body-parser";
 import * as mongodb from './config/mongodb';
 import * as dotenv from "dotenv";
@@ -27,3 +27,5 @@ app.listen(port, () => {
 })
 
 app.use("/api/v1", router());
+
+app.use(errorHandler);

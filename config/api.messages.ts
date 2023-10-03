@@ -1,13 +1,21 @@
 export const messages = {
   AUTH_FAILED: 'Authentication failed',
   COMMON_ERR: 'Something went wrong!',
-  USER_FETCH_ERR: "Some error occurred while finding the user.",
-  USER_UPDATE_ERR: "Some error occurred while updating the user.",
-  USER_DELETE_ERR: "Some error occurred while deleting the user.",
+  USER_NOT_FOUND: 'User not found',
   EMAIL_REQUIRED: 'Email is required',
   EMAIL_INVALID: 'Email is invalid',
+  EMAIL_ALREADY_EXISTS: 'Email id is already registered',
   PASSWORD_REQUIRED: 'Password is required',
   PASSWORD_LENGTH: 'Password min must be 6 characters long',
+  FIRST_NAME_REQUIRED: 'First name is required',
+  LAST_NAME_REQUIRED: 'Last name is required',
+  INVALID_ROLE:'Role must be one of [user, admin]',
+  GENDER_REQUIRED: 'Gender is required',
+  INVALID_GENDER: 'Gender should be male or female',
   INVALID_TOKEN: 'Invalid token.',
-  ACCESS_DENIED: 'Access denied. No token provided.'
+  TOKEN_EXPIRED:'Token has expired',
+  ACCESS_DENIED: 'Access denied. No token provided.',
+  ACTIVATE_ACCOUNT_TITLE: 'Activate Your Account',
+  USER_REGISTER_SUCCESS: 'User register successfully',
+  USER_ACTIVATED: 'Account activated successfully'
 }

@@ -1,38 +1,48 @@
-import { Request, Response } from 'express';
-import * as userService from '../services/user.service';
+import { NextFunction, Request, Response } from 'express';
 import { messages } from '../config/api.messages';
-import { HttpStatus } from '../config/status-code';
+import { HttpStatus } from '../config/http-status';
+import * as userService from '../services/user.service';
+import mailService from '../services/mail.service';
+import { verifyToken } from '../middleware/jwt.validation';
 
-export async function login(req: Request, res: Response) {
+export async function login(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!req.body.email) {
-      return res.status(HttpStatus.BAD_REQUEST).send({ message: messages.EMAIL_REQUIRED });
-    }
-    if (!req.body.password) {
-      return res.status(HttpStatus.BAD_REQUEST).send({ message: messages.PASSWORD_REQUIRED });
-    }
     const users = await userService.login(req.body);
     return res.status(HttpStatus.SUCCESS).send({ data: users });
   }
-  catch (err: any) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: err.message || messages.COMMON_ERR });
+  catch (err) {
+    next(err);
   }
 }
 
-export async function registerUser(req: Request, res: Response) {
+export async function registerUser(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!req.body.email) {
-      return res.status(HttpStatus.BAD_REQUEST).send({ message: messages.EMAIL_REQUIRED });
-    }
-    const data = await userService.registration(req.body);
-    return res.status(HttpStatus.SUCCESS).send(data);
+    const user = await userService.registration(req.body);
+    const invitationData = {
+      activationLink: `http://localhost:4200/auth/active-user/${user.token}`
+    };
+    await mailService.sendActivationEmail(user.email, messages.ACTIVATE_ACCOUNT_TITLE, 'invitation-user', invitationData);
+    return res.status(HttpStatus.SUCCESS).send({ message: messages.USER_REGISTER_SUCCESS, user });
   }
   catch (err) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.COMMON_ERR });
+    next(err);
   }
 }
 
-export async function getUsers(req: Request, res: Response) {
+export async function activateUser(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { token } = req.params;
+    const decodedToken = verifyToken(token);
+
+    const user = await userService.activateUser(decodedToken.userId);
+    return res.status(HttpStatus.SUCCESS).send({ message: messages.USER_ACTIVATED, user });
+  }
+  catch (err) {
+    next(err);
+  }
+}
+
+export async function getUsers(req: Request, res: Response, next: NextFunction) {
   try {
     const searchTerm = req.query.search as string;
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
@@ -54,21 +64,21 @@ export async function getUsers(req: Request, res: Response) {
     return res.status(HttpStatus.SUCCESS).send({ data: users });
   }
   catch (err) {
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.COMMON_ERR });
+    next(err);
   }
 }
 
-export async function getUserById(req: Request, res: Response): Promise<any> {
+export async function getUserById(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     const user = await userService.getUserById(req.params.id);
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.USER_FETCH_ERR });
+    next(err);
   }
 }
 
-export async function updateUser(req: Request, res: Response): Promise<any> {
+export async function updateUser(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     const data = {
       email: req.body.email,
@@ -82,16 +92,16 @@ export async function updateUser(req: Request, res: Response): Promise<any> {
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.USER_UPDATE_ERR });
+    next(err);
   }
 }
 
-export async function deleteUser(req: Request, res: Response): Promise<any> {
+export async function deleteUser(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     const user = await userService.deleteUser(req.params.id);
     res.send(JSON.stringify(user));
   }
   catch (err) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: messages.USER_DELETE_ERR });
+    next(err);
   }
 }

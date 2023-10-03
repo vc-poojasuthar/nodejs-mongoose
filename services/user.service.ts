@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import User, { IUserModel } from '../models/user.model';
 import { messages } from "../config/api.messages";
-import MailService from '../services/mail.service';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
@@ -17,7 +16,7 @@ export async function login(body: { email: string; password: string }) {
   const token: string = jwt.sign({ userId: user._id }, key, {
     expiresIn,
   });
-  const loginUser = {
+  return {
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
@@ -26,19 +25,31 @@ export async function login(body: { email: string; password: string }) {
     gender: user.gender,
     isActive: user.isActive,
     token: token
-  }
-  const invitationData = {
-    activationLink: `http://localhost:4200/auth/active-user/${token}`
   };
-  await MailService.sendActivationEmail(user.email, 'Activate Your Account','invitation-user', invitationData);
-
-  return loginUser;
 }
 
 
 export async function registration(body: IUserModel) {
+  const user = await User.findOne({ email: body.email });
+  if (user) {
+    throw new Error(messages.EMAIL_ALREADY_EXISTS);
+  }
   body._id = new mongoose.Types.ObjectId();
+  const key = process.env.SECRET_KEY ?? '';
+  const expiresIn = process.env.EXPIRES_TIME ?? '1h';
+  const token: string = jwt.sign({ userId: body._id }, key, {
+    expiresIn,
+  });
+  body.token = token;
   return await User.create(body);
+}
+
+export async function activateUser(userId: string) {
+  const user = await User.findByIdAndUpdate(userId, { isActive: true, token: '' });
+  if (!user) {
+    throw new Error(messages.USER_NOT_FOUND);
+  }
+  return user;
 }
 
 export async function getUsers(query: any, page: number, limit: number, sortField: string, sortOrder: number) {

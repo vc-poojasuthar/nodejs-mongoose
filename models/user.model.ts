@@ -10,11 +10,12 @@ export const User = new Schema<IUserModel>({
     type: String,
     required: true,
     trim: true,
-    unique: true
+    unique: true,
+    lowercase: true,
   },
   firstName: {
     type: String,
-    required:[true,"First name is required"],
+    required: [true, "First name is required"],
     trim: true
   },
   lastName: {
@@ -46,7 +47,9 @@ export const User = new Schema<IUserModel>({
     type: Boolean,
     default: false
   },
-  token: { type: String },
+  token: {
+    type: String
+  },
   isDeleted: {
     type: Boolean,
     default: false
