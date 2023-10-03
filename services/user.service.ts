@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 import User, { IUserModel } from '../models/user.model';
-import { messages } from "../config/api.messages";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
+import { AuthFailedException, EmailAlreadyExistsException, UserNotFoundException } from "../config/custom-exceptions";
 dotenv.config();
 
 export async function login(body: { email: string; password: string }) {
   const user = await User.findOne({ email: body.email });
   if (!user || !(await bcrypt.compare(body.password, user.password))) {
-    throw new Error(messages.AUTH_FAILED);
+    throw new AuthFailedException();
   }
   const key = process.env.SECRET_KEY ?? '';
   const expiresIn = process.env.EXPIRES_TIME ?? '1h';
@@ -32,7 +32,7 @@ export async function login(body: { email: string; password: string }) {
 export async function registration(body: IUserModel) {
   const user = await User.findOne({ email: body.email });
   if (user) {
-    throw new Error(messages.EMAIL_ALREADY_EXISTS);
+    throw new EmailAlreadyExistsException();
   }
   body._id = new mongoose.Types.ObjectId();
   const key = process.env.SECRET_KEY ?? '';
@@ -47,7 +47,7 @@ export async function registration(body: IUserModel) {
 export async function activateUser(userId: string) {
   const user = await User.findByIdAndUpdate(userId, { isActive: true, token: '' });
   if (!user) {
-    throw new Error(messages.USER_NOT_FOUND);
+    throw new UserNotFoundException();
   }
   return user;
 }
