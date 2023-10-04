@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { HttpStatus } from './http-status';
-import { messages } from './api.messages';
+import { messages } from './api-messages';
 import { ApiError } from './custom-exceptions';
 
 // Middleware for handling errors globally

@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
-import { messages } from '../config/api.messages';
+import { messages } from '../config/api-messages';
 import { HttpStatus } from '../config/http-status';
 
 const emailMessages = {

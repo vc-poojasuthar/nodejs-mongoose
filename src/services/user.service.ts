@@ -28,7 +28,6 @@ export async function login(body: { email: string; password: string }) {
   };
 }
 
-
 export async function registration(body: IUserModel) {
   const user = await User.findOne({ email: body.email });
   if (user) {
@@ -57,9 +56,11 @@ export async function getUsers(query: any, page: number, limit: number, sortFiel
   sortOptions[sortField] = sortOrder;
 
   const data = await User.find(query)
+    .select('-password -token -createdAt -updatedAt')
     .sort(sortOptions)
     .skip((page - 1) * limit)
-    .limit(limit);
+    .limit(limit)
+    .lean();
 
   return data;
 }

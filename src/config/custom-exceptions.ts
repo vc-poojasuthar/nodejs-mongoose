@@ -1,4 +1,4 @@
-import { messages } from "./api.messages";
+import { messages } from "./api-messages";
 import { HttpStatus } from "./http-status";
 
 export class ApiError extends Error {

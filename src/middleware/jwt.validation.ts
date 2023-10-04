@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { messages } from '../config/api.messages';
+import { messages } from '../config/api-messages';
 import * as dotenv from "dotenv";
 import { HttpStatus } from '../config/http-status';
 dotenv.config();

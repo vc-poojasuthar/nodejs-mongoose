@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import cors from 'cors';
-import router from './routes/index';
-import { errorHandler } from "./config/error-handler";
+import router from './src/routes/index';
+import { errorHandler } from "./src/config/error-handler";
 import * as bodyParser from "body-parser";
-import * as mongodb from './config/mongodb';
+import * as mongodb from './src/config/mongodb';
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -21,11 +21,9 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 const port = process.env.PORT;
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
 
 app.use("/api/v1", router());
-
 app.use(errorHandler);

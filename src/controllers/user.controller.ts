@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { messages } from '../config/api.messages';
+import { messages } from '../config/api-messages';
 import { HttpStatus } from '../config/http-status';
 import * as userService from '../services/user.service';
 import mailService from '../services/mail.service';
