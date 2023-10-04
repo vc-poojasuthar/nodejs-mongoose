@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-const JWT_SECRET_KEY = process.env.SECRET_KEY ?? '';
+const JWT_SECRET_KEY = process.env.JWT_SECRET ?? '';
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization?.replace('Bearer ', '');

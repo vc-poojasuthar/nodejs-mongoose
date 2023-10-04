@@ -20,9 +20,9 @@ class MailService {
   async sendActivationEmail(to: string, subject: string, templateName: string, templateData: any) {
    const htmlContent = await ejs.renderFile(`templates/${templateName}.ejs`, templateData);
     const mailOptions = {
-      from: process.env.FROM,
+      from: process.env.EMAIL_FROM,
       to,
-      cc: process.env.CC,
+      cc: process.env.EMAIL_CC,
       subject,
       html: htmlContent as string,
     };

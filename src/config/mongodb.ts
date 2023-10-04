@@ -3,13 +3,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export const connect = () => {
-  mongoose.set('debug', true);
-  // mongoose.set('timestamps', {
-  //   createdAt: 'created_at',
-  //   updatedAt: 'updated_at',
-  //   currentTime: () => new Date().toISOString(),
-  // });
-  const url = process.env.DATABASE_URI as string;
+  mongoose.set('debug', true); // For debugging mode
+  const url = process.env.MONGODB_URL as string;
   mongoose.connect(url);
 };
 

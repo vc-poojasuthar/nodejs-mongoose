@@ -11,7 +11,7 @@ export async function login(body: { email: string; password: string }) {
   if (!user || !(await bcrypt.compare(body.password, user.password))) {
     throw new AuthFailedException();
   }
-  const key = process.env.SECRET_KEY ?? '';
+  const key = process.env.JWT_SECRET ?? '';
   const expiresIn = process.env.EXPIRES_TIME ?? '1h';
   const token: string = jwt.sign({ userId: user._id }, key, {
     expiresIn,
@@ -34,7 +34,7 @@ export async function registration(body: IUserModel) {
     throw new EmailAlreadyExistsException();
   }
   body._id = new mongoose.Types.ObjectId();
-  const key = process.env.SECRET_KEY ?? '';
+  const key = process.env.JWT_SECRET ?? '';
   const expiresIn = process.env.EXPIRES_TIME ?? '1h';
   const token: string = jwt.sign({ userId: body._id }, key, {
     expiresIn,
