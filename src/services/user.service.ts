@@ -76,7 +76,6 @@ export async function resetPassword(userId: string, password: string) {
   return await user.save();  
 }
 
-
 export async function getUsers(query: any, page: number, limit: number, sortField: string, sortOrder: number) {
   const sortOptions: any = {};
   sortOptions[sortField] = sortOrder;

@@ -7,6 +7,7 @@ export const messages = {
   EMAIL_ALREADY_EXISTS: 'Email is already registered',
   PASSWORD_REQUIRED: 'Password is required',
   PASSWORD_LENGTH: 'Password min must be 6 characters long',
+  PASSWORD_NOT_MATCH: 'Password and confirm password not match',
   FIRST_NAME_REQUIRED: 'First name is required',
   LAST_NAME_REQUIRED: 'Last name is required',
   INVALID_ROLE:'Role must be one of [user, admin]',
