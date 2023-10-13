@@ -17,5 +17,8 @@ export const messages = {
   ACCESS_DENIED: 'Access denied. No token provided.',
   ACTIVATE_ACCOUNT_TITLE: 'Activate Your Account',
   USER_REGISTER_SUCCESS: 'User register successfully',
-  USER_ACTIVATED: 'Account activated successfully'
+  USER_ACTIVATED: 'Account activated successfully',
+  RESET_PASSWORD_TITLE: 'Rest your password',
+  FORGOT_PASSWORD_SUCCESS: 'Forgot password successfully',
+  RESET_PASSWORD_SUCCESS: 'Reset password successfully',
 }

@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import ejs from "ejs";
 import * as dotenv from "dotenv";
+import { join } from "path";
 dotenv.config();
 
 class MailService {
@@ -18,7 +19,9 @@ class MailService {
   }
   
   async sendActivationEmail(to: string, subject: string, templateName: string, templateData: any) {
-   const htmlContent = await ejs.renderFile(`templates/${templateName}.ejs`, templateData);
+    const ejsPath = join(__dirname, `../templates/${templateName}.ejs`);
+   
+    const htmlContent = await ejs.renderFile(ejsPath, templateData);
     const mailOptions = {
       from: process.env.EMAIL_FROM,
       to,

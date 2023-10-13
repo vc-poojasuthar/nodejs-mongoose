@@ -18,9 +18,10 @@ export class AuthFailedException extends ApiError {
   }
 }
 
-export class UserNotFoundException extends ApiError {
-  constructor() {    
-    super(messages.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+export class NotFoundException extends ApiError {
+  constructor(public message: string) { 
+    super(message, HttpStatus.NOT_FOUND);
+    this.message = message;
     this.name = this.constructor.name;
   }
 }

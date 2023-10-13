@@ -3,17 +3,20 @@ import User, { IUserModel } from '../models/user.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import * as dotenv from "dotenv";
-import { AuthFailedException, EmailAlreadyExistsException, UserNotFoundException } from "../config/custom-exceptions";
+import { AuthFailedException, EmailAlreadyExistsException, NotFoundException } from "../config/custom-exceptions";
+import { messages } from "../config/api-messages";
 dotenv.config();
+
+export const JWT_SECRET_KEY = process.env.JWT_SECRET as string;
 
 export async function login(body: { email: string; password: string }) {
   const user = await User.findOne({ email: body.email });
   if (!user || !(await bcrypt.compare(body.password, user.password))) {
     throw new AuthFailedException();
   }
-  const key = process.env.JWT_SECRET ?? '';
-  const expiresIn = process.env.EXPIRES_TIME ?? '1h';
-  const token: string = jwt.sign({ userId: user._id }, key, {
+ 
+  const expiresIn = process.env.EXPIRES_TIME;
+  const token: string = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
     expiresIn,
   });
   return {
@@ -34,9 +37,9 @@ export async function registration(body: IUserModel) {
     throw new EmailAlreadyExistsException();
   }
   body._id = new mongoose.Types.ObjectId();
-  const key = process.env.JWT_SECRET ?? '';
-  const expiresIn = process.env.EXPIRES_TIME ?? '1h';
-  const token: string = jwt.sign({ userId: body._id }, key, {
+
+  const expiresIn = process.env.EXPIRES_TIME;
+  const token: string = jwt.sign({ userId: body._id }, JWT_SECRET_KEY, {
     expiresIn,
   });
   body.token = token;
@@ -46,10 +49,33 @@ export async function registration(body: IUserModel) {
 export async function activateUser(userId: string) {
   const user = await User.findByIdAndUpdate(userId, { isActive: true, token: '' });
   if (!user) {
-    throw new UserNotFoundException();
+    throw new NotFoundException(messages.USER_NOT_FOUND);
   }
   return user;
 }
+
+export async function forgotPassword(email: string) {
+  const user = await User.findOne({ email });
+  if (!user) throw new NotFoundException(messages.USER_NOT_FOUND);
+ 
+  const expiresIn = process.env.EXPIRES_TIME;
+  const token: string = jwt.sign({ userId: user._id }, JWT_SECRET_KEY, {
+    expiresIn,
+  });
+  await user.updateOne({ token: token }); 
+  return user;
+}
+
+export async function resetPassword(userId: string, password: string) {
+  const user = await User.findById(userId);
+    if (!user) {
+    throw new NotFoundException(messages.USER_NOT_FOUND);
+  }
+  user.token ='';
+  user.password = password;
+  return await user.save();  
+}
+
 
 export async function getUsers(query: any, page: number, limit: number, sortField: string, sortOrder: number) {
   const sortOptions: any = {};

@@ -6,5 +6,9 @@ import { validateLoginUser, validateRegisterUser } from "../validators/auth.vali
 export const authRouter = express.Router();
 
 authRouter.post('/login', validateLoginUser, userController.login);
+
 authRouter.post('/register', authMiddleware, validateRegisterUser, userController.registerUser);
-authRouter.post('/activate/:token', userController.activateUser)
+authRouter.post('/activate/:token', userController.activateUser);
+
+authRouter.post('/forgot-password', userController.forgotPassword);
+authRouter.post('/resetPassword/:token', userController.resetPassword);
