@@ -8,3 +8,4 @@ userRouter.get('/', authMiddleware, userController.getUsers);
 userRouter.get('/:id', authMiddleware, userController.getUserById);
 userRouter.put('/:id', authMiddleware, userController.updateUser);
 userRouter.delete('/:id', authMiddleware, userController.deleteUser);
+

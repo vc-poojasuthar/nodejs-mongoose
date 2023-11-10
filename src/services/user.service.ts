@@ -43,7 +43,7 @@ export async function registration(body: IUserModel) {
     expiresIn,
   });
   body.token = token;
-  return await User.create(body);
+  return User.create(body);
 }
 
 export async function activateUser(userId: string) {
@@ -73,7 +73,7 @@ export async function resetPassword(userId: string, password: string) {
   }
   user.token ='';
   user.password = password;
-  return await user.save();  
+  return user.save();  
 }
 
 export async function getUsers(query: any, page: number, limit: number, sortField: string, sortOrder: number) {
@@ -90,14 +90,14 @@ export async function getUsers(query: any, page: number, limit: number, sortFiel
   return data;
 }
 
-export async function getUserById(id: string) {
-  return await User.findById(id);
+export function getUserById(id: string) {
+  return User.findById(id);
 }
 
-export async function updateUser(userId: string, body: any) {
-  return await User.findByIdAndUpdate({ _id: userId }, body, { new: true, strict: false });
+export function updateUser(userId: string, body: any) {
+  return User.findByIdAndUpdate({ _id: userId }, body, { new: true, strict: false });
 }
 
-export async function deleteUser(userId: string) {
-  return await User.deleteOne({ _id: userId });
+export function deleteUser(userId: string) {
+  return User.deleteOne({ _id: userId });
 }

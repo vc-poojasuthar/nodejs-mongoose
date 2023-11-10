@@ -110,7 +110,7 @@ export async function getUsers(req: Request, res: Response, next: NextFunction) 
 export async function getUserById(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     const user = await userService.getUserById(req.params.id);
-    res.send(JSON.stringify(user));
+    return res.status(HttpStatus.SUCCESS).send({ message: messages.GET_USER, user });
   }
   catch (err) {
     next(err);
@@ -128,7 +128,7 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
       confirmPassword: req.body.confirmPassword
     };
     const user = await userService.updateUser(req.params.id, data);
-    res.send(JSON.stringify(user));
+    return res.status(HttpStatus.SUCCESS).send({ message: messages.UPDATE_USER, user });
   }
   catch (err) {
     next(err);
@@ -137,8 +137,8 @@ export async function updateUser(req: Request, res: Response, next: NextFunction
 
 export async function deleteUser(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
-    const user = await userService.deleteUser(req.params.id);
-    res.send(JSON.stringify(user));
+    const user = await userService.deleteUser(req.params.id);   
+    return res.status(HttpStatus.SUCCESS).send({ message: messages.DELETE_USER, user });
   }
   catch (err) {
     next(err);
