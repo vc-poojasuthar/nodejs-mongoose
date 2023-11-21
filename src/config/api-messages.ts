@@ -30,4 +30,8 @@ export const messages = {
   UPDATE_PRODUCT: 'Product updated successfully',
   DELETE_PRODUCT: 'Product deleted successfully',
   GET_CATEGORIES: 'categories get successfully',
+  ADD_ITEM_CART: 'Item added into cart successfully',
+  UPDATE_ITEM_QTY_CART: 'Item qty updated into cart successfully',
+  DELETE_ITEM_CART: 'Item deleted into cart successfully',
+  GET_USER_CART_ITEM: 'cart item get successfully'
 }

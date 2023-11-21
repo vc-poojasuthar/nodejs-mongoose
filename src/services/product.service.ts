@@ -10,6 +10,7 @@ export async function getProducts(query: any, page: number, limit: number, sortF
   sortOptions[sortField] = sortOrder;
 
   const data = await Product.find(query)
+  .populate('categoryId')
     .select('-createdAt -updatedAt')
     .sort(sortOptions)
     .skip((page - 1) * limit)
@@ -20,7 +21,7 @@ export async function getProducts(query: any, page: number, limit: number, sortF
 }
 
 export function getProductById(id: string) {
-  return Product.findById(id);
+  return Product.findById(id).populate('categoryId');
 }
 
 export function updateProduct(productId: string, body: any) {

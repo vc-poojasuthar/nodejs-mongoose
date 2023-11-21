@@ -12,11 +12,11 @@ const categorySchema = new Schema({
 
 const Category = mongoose.model("Category", categorySchema);
 
-Category.create(
-  { name: 'Groceries' },
-  { name: 'Clothing' },
-  { name: 'Electronics' },
-  { name: 'Toys & games' }
-);
+// Category.create(
+//   { name: 'Groceries' },
+//   { name: 'Clothing' },
+//   { name: 'Electronics' },
+//   { name: 'Toys & games' }
+// );
 
 export default Category;
